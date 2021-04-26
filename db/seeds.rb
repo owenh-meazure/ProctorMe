@@ -5,3 +5,27 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+# start from scratch
+College.destroy_all
+Exam.destroy_all
+User.destroy_all
+
+# create a college
+college_id = College.create!.id
+
+# create 2 exams for the college
+2.times { Exam.create!(college_id: college_id) }
+first_exam_id, second_exam_id = Exam.all.map(&:id)
+
+# create 2 users for each exam
+User.create!([
+  { exam_id: first_exam_id },
+  { exam_id: first_exam_id, first_name: 'John', last_name: 'Dough' },
+  { exam_id: second_exam_id, first_name: 'Kevin', phone_number: '212 222 2222' },
+  { exam_id: second_exam_id, last_name: 'Rumplestiltskin', start_time: 1.hour.ago },
+])
+
+p "Created #{College.count} colleges"
+p "Created #{Exam.count} exams"
+p "Created #{User.count} users"

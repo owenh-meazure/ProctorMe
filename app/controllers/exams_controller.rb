@@ -46,6 +46,6 @@ class ExamsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def exam_params
-      params.require(:exam).permit(:start_time)
+      params.require(:exam).permit(:college_id, :start_time, :end_time)
     end
 end

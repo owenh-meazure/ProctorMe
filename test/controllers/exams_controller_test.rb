@@ -2,6 +2,7 @@ require "test_helper"
 
 class ExamsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @college = College.create!
     @exam = exams(:one)
   end
 
@@ -12,7 +13,7 @@ class ExamsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create exam" do
     assert_difference('Exam.count') do
-      post exams_url, params: { exam: { start_time: @exam.start_time } }, as: :json
+      post exams_url, params: { exam: { college_id: @college.id, start_time: @exam.start_time } }, as: :json
     end
 
     assert_response 201
@@ -24,7 +25,7 @@ class ExamsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update exam" do
-    patch exam_url(@exam), params: { exam: { start_time: @exam.start_time } }, as: :json
+    patch exam_url(@exam), params: { exam: { college_id: @college.id, start_time: @exam.start_time } }, as: :json
     assert_response 200
   end
 
