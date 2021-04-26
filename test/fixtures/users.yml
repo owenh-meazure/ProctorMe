@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: John
+  last_name: Doe
+  phone_number: 555 555 5555
+
+two:
+  first_name: Jane
+  last_name: Johnson
+  phone_number: +1 (212) 222-2222
