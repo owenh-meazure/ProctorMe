@@ -37,8 +37,13 @@ class UsersController < ApplicationController
         User.new(user_params).save
       end
 
-    exam_belongs_to_college = @exam && @college&.exams.any? { |exam| exam.id == @exam.id }
-    render exam_belongs_to_college ? :ok : :bad_request
+    if !exam_active?
+      render json: "start_time must be between the exam's start and end times", status: :bad_request
+    elsif !exam_belongs_to_college?
+      render json: "exam must belong to the given college", status: :bad_request
+    else
+      render status: :ok
+    end
   end
 
   # PATCH/PUT /users/1
@@ -74,5 +79,21 @@ class UsersController < ApplicationController
       params.require(:user).permit(%I[
         id college_id exam_id first_name last_name phone_number start_time
       ])
+    end
+
+    # returns true when the associated exam belongs to the associated college
+    def exam_belongs_to_college?
+      @exam && @college&.exams.any? { |exam| exam.id == @exam.id }
+    end
+
+    # returns true when the start_time falls within the time window for of the exam
+    def exam_active?
+      return false unless @exam
+
+      enroll_time = params[:start_time]&.to_time(:utc) || Time.zone.now
+      after_start = !@exam.start_time || @exam.start_time <= enroll_time
+      before_end = !@exam.end_time || enroll_time <= @exam.end_time
+
+      after_start && before_end
     end
 end

@@ -15,7 +15,8 @@ User.destroy_all
 college_id = College.create!.id
 
 # create 2 exams for the college
-2.times { Exam.create!(college_id: college_id) }
+Exam.create!(college_id: college_id, start_time: 30.minutes.ago, end_time: 30.minutes.from_now)
+Exam.create!(college_id: college_id)
 first_exam_id, second_exam_id = Exam.all.map(&:id)
 
 # create 2 users for each exam

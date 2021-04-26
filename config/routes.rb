@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   resources :users
   resources :exams
   resources :colleges
-  get '/', action: :enroll, controller: :users
+  post '/', action: :enroll, controller: :users
 end
